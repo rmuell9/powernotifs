@@ -51,7 +51,7 @@ while True:
             if current_percent == 100:
                 notify("Plugged in: battery full")
             else:
-                notify(f"Charging: {current_percent}%")
+                notify(f"Plugged in: Charging: {current_percent}%")
         else:
             notify(f"Unplugged: {current_percent}%")
         initial_plugged = plugged
