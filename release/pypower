@@ -6,7 +6,7 @@ import time
 
 warning_level = 20
 critical_level = 5
-check_interval = 5
+check_interval = 2
 
 
 def get_battery_info():
