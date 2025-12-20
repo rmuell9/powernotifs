@@ -38,9 +38,11 @@ if initial_plugged:
 
 else:
     if initial_percent <= WARNING_LEVEL and initial_percent > CRITICAL_LEVEL:
-        notify(f"Battery Level: {initial_percent}%")
+        notify(f"Current level: {initial_percent}%", "normal",
+               "Battery WARNING")
     elif initial_percent <= CRITICAL_LEVEL:
-        notify(f"CRITICAL Battery Level: {initial_percent}%", "critical")
+        notify(f"Current level: {initial_percent}%",
+               "critical", "Battery CRITICAL")
 
 
 while True:
@@ -51,18 +53,21 @@ while True:
             if current_percent == 100:
                 notify("Plugged in: battery full")
             else:
-                notify(f"Plugged in: Charging: {current_percent}%")
+                notify(f"Charging: {current_percent}%", "normal",
+                       "Battery plugged in")
         else:
-            notify(f"Unplugged: {current_percent}%")
+            notify(f"Current level: {current_percent}%", "normal",
+                   "Battery unplugged")
         initial_plugged = plugged
 
     if current_percent != initial_percent:
         if not plugged:
             if current_percent == WARNING_LEVEL:
-                notify(f"Battery Level: {current_percent}%")
+                notify(f"Current level: {current_percent}%", "normal",
+                       "Battery WARNING")
             elif current_percent == CRITICAL_LEVEL:
-                notify(f"CRITICAL Battery Level: {current_percent}%",
-                       "critical")
+                notify(f"Current level: {current_percent}%",
+                       "critical", "Battery CRITICAL")
         initial_percent = current_percent
 
     time.sleep(CHECK_INTERVAL)
