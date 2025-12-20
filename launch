@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cp main.py release/pypower
+chmod +x release/pypower
+cp release/pypower ~/.local/bin/pypower
+pkill -f "python.*pypower"
+pypower &
