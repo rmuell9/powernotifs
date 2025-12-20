@@ -4,8 +4,8 @@ import subprocess
 import psutil
 import time
 
-WARNING_LEVEL = 99
-CRITICAL_LEVEL = 95
+WARNING_LEVEL = 20
+CRITICAL_LEVEL = 5
 CHECK_INTERVAL = 2
 
 
