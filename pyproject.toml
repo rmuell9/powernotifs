@@ -1,5 +1,5 @@
 [project]
-name = "pynotifs"
+name = "pypower"
 version = "0.1.0"
 description = "Power Notifications"
 readme = "README.md"
