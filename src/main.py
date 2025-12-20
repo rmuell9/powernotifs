@@ -61,7 +61,8 @@ while True:
             if current_percent == WARNING_LEVEL:
                 notify(f"Battery Level: {current_percent}%")
             elif current_percent == CRITICAL_LEVEL:
-                notify(f"CRITICAL Battery Level: {current_percent}%")
+                notify(f"CRITICAL Battery Level: {current_percent}%",
+                       "critical")
         initial_percent = current_percent
 
     time.sleep(CHECK_INTERVAL)
