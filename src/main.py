@@ -2,11 +2,11 @@
 
 import subprocess
 import psutil
-import time
+import pyudev
+import select
 
 WARNING_LEVEL = 20
 CRITICAL_LEVEL = 5
-CHECK_INTERVAL = 2
 
 
 def get_battery_info():
@@ -45,36 +45,49 @@ else:
                "critical", "Battery - CRITICAL")
 
 
+context = pyudev.Context()
+monitor = pyudev.Monitor.from_netlink(context)
+monitor.filter_by(subsystem='power_supply')
+monitor.start()
+
+poll = select.poll()
+poll.register(monitor.fileno(), select.POLLIN)
+
 while True:
-    plugged, current_percent = get_battery_info()
+    events = poll.poll()
+    if events:
+        for device in iter(monitor.poll, None):
+            if device is None:
+                break
 
-    if plugged != initial_plugged:
-        if plugged:
-            if current_percent == 100:
-                notify("Plugged In: battery full")
-            else:
-                notify(f"Charging: {current_percent}%", "normal",
-                       "Battery Plugged In")
-        else:
-            if current_percent <= WARNING_LEVEL and current_percent > CRITICAL_LEVEL:
-                notify(f"Current level: {current_percent}%", "normal",
-                       "Battery Unplugged - WARNING")
-            elif initial_percent <= CRITICAL_LEVEL:
-                notify(f"Current level: {current_percent}%",
-                       "critical", "Battery Unplugged - CRITICAL")
-            else:
-                notify(f"Current level: {current_percent}%", "normal",
-                       "Battery Unplugged")
-        initial_plugged = plugged
+            plugged, current_percent = get_battery_info()
+            if plugged != initial_plugged:
+                if plugged:
+                    if current_percent == 100:
+                        notify("Plugged In: battery full")
+                    else:
+                        notify(f"Charging: {current_percent}%", "normal",
+                               "Battery Plugged In")
+                else:
+                    if current_percent <= WARNING_LEVEL and \
+                         current_percent > CRITICAL_LEVEL:
+                        notify(f"Current level: {current_percent}%", "normal",
+                               "Battery Unplugged - WARNING")
+                    elif current_percent <= CRITICAL_LEVEL:
+                        notify(f"Current level: {current_percent}%",
+                               "critical", "Battery Unplugged - CRITICAL")
+                    else:
+                        notify(f"Current level: {current_percent}%", "normal",
+                               "Battery Unplugged")
+                initial_plugged = plugged
 
-    if current_percent != initial_percent:
-        if not plugged:
-            if current_percent == WARNING_LEVEL:
-                notify(f"Current level: {current_percent}%", "normal",
-                       "Battery - WARNING")
-            elif current_percent == CRITICAL_LEVEL:
-                notify(f"Current level: {current_percent}%",
-                       "critical", "Battery - CRITICAL")
-        initial_percent = current_percent
-
-    time.sleep(CHECK_INTERVAL)
+            if current_percent != initial_percent:
+                if not plugged:
+                    if current_percent == WARNING_LEVEL:
+                        notify(f"Current level: {current_percent}%", "normal",
+                               "Battery - WARNING")
+                    elif current_percent == CRITICAL_LEVEL:
+                        notify(f"Current level: {current_percent}%",
+                               "critical", "Battery - CRITICAL")
+                initial_percent = current_percent
+            break
