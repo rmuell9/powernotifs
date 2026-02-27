@@ -119,10 +119,6 @@ fn usage() {
     eprintln!(
         "  start    Start monitoring battery events"
     );
-    eprintln!(
-        "  warning  Check if battery is at warning \
-         level"
-    );
 }
 
 fn start() -> battery::Result<()> {
