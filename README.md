@@ -1,6 +1,6 @@
 # Power Notifications
 
-![README](.README.md/banner.png)
+![README](.README.md/banner.jpg)
 
 `powernotifs` sends simple power notifications.
 Made for people who find utility in `poweralterd` but don't care about their
