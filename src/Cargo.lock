@@ -619,6 +619,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
 
 [[package]]
+name = "powernotifs"
+version = "0.1.0"
+dependencies = [
+ "battery",
+ "libc",
+ "notify-rust",
+]
+
+[[package]]
 name = "proc-macro-crate"
 version = "3.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -659,15 +668,6 @@ name = "r-efi"
 version = "5.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
-
-[[package]]
-name = "rspower"
-version = "0.1.0"
-dependencies = [
- "battery",
- "libc",
- "notify-rust",
-]
 
 [[package]]
 name = "rustix"
