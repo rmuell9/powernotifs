@@ -75,7 +75,7 @@ fn wait_for_power_event(monitor: &File) -> io::Result<()> {
 }
 
 const WARNING_LEVEL: u8 = 20;
-const CRITICAL_LEVEL: u8 = 5;
+const CRITICAL_LEVEL: u8 = 10;
 
 fn main() -> battery::Result<()> {
     let manager = battery::Manager::new()?;
@@ -97,7 +97,6 @@ fn main() -> battery::Result<()> {
     let mut prev_plugged = battery.state() != State::Discharging;
     let mut prev_percent = battery.state_of_charge().get::<percent>().floor() as u8;
 
-    // Initial notification
     let message = format!("Current level: {}%", prev_percent);
     if prev_plugged {
         if prev_percent == 100 {
@@ -142,7 +141,7 @@ fn main() -> battery::Result<()> {
         if current_percent != prev_percent && !plugged {
             if current_percent == WARNING_LEVEL {
                 let _ = notify("Battery Warning", &message, "normal");
-            } else if current_percent == CRITICAL_LEVEL {
+            } else if current_percent <= CRITICAL_LEVEL {
                 let _ = notify("Battery Critical", &message, "critical");
             }
             prev_percent = current_percent;
