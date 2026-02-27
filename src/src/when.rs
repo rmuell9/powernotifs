@@ -26,10 +26,8 @@ pub fn warning() -> battery::Result<()> {
         .state_of_charge()
         .get::<percent>()
         .floor() as u8;
-    if current_percent <= CRITICAL_LEVEL {
-        println!("󰁺");
-    } else if current_percent <= WARNING_LEVEL {
-        println!("󰁼");
+    if current_percent <= WARNING_LEVEL {
+        println!("{}", current_percent);
     }
     Ok(())
 }

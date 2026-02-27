@@ -47,15 +47,13 @@ pub fn start() -> battery::Result<()> {
     let monitor = bat::setup_udev_monitor()
         .expect("Failed to setup udev monitor");
 
-    let mut prev_plugged =
-        battery.state() != State::Discharging;
+    let mut prev_plugged = battery.state() != State::Discharging;
     let mut prev_percent = battery
         .state_of_charge()
         .get::<percent>()
         .floor() as u8;
 
-    let message =
-        format!("Current level: {}%", prev_percent);
+    let message = format!("Current level: {}%", prev_percent);
     if prev_plugged {
         if prev_percent == 100 {
             let _ = notify(
