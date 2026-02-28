@@ -4,6 +4,7 @@ extern crate battery;
 extern crate libc;
 
 use battery::units::ratio::percent;
+use battery::State;
 
 
 pub const WARNING_LEVEL: u8 = 20;
@@ -26,7 +27,9 @@ pub fn warning() -> battery::Result<()> {
         .state_of_charge()
         .get::<percent>()
         .floor() as u8;
-    if current_percent <= WARNING_LEVEL {
+    if current_percent <= WARNING_LEVEL
+        && battery.state() != State::Charging
+    {
         println!("{}", current_percent);
     }
     Ok(())
